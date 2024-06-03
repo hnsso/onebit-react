@@ -34,3 +34,5 @@ function funcB(one, ...rest) {
 }
 
 funcB(...arr1);
+
+const userA = () => {};
