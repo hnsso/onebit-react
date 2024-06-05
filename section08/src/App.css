@@ -1,0 +1,9 @@
+.App {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  /* 컴포넌트간의 간격 */
+  gap: 50px;
+  width: 1000px;
+  margin: 0px auto;
+}

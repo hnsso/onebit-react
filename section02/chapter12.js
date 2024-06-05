@@ -37,5 +37,9 @@ orderFood((food) => {
 
   cooldownFood(food, (cooldownedFood) => {
     console.log(cooldownedFood);
+
+    freezeFood(cooldownedFood, (freezedFood) => {
+      console.log(freezedFood);
+    });
   });
 });
