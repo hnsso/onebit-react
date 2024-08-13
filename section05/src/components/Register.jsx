@@ -22,7 +22,7 @@ const Register = () => {
     bio: "",
   });
 
-  // reference 객체 생성
+  // reference 객체 생성 => useRef는 리랜더링이 안된다
   const countRef = useRef(
     0
     // Current라는 프로퍼티를 갖는 객체가 생성이 된다
@@ -35,7 +35,9 @@ const Register = () => {
   const onSubmit = () => {
     if (input.name === "") {
       // 이름을 입력하는 DOM요소에 포커스
-      //   console.log(inputRef.current);
+      // 만약에 이름을 기제하지 않았을 경우 포커스를 할려면 간접적인 접근인 useRef를 사용해야한다
+      // console.log(inputRef.current);
+
       inputRef.current.focus();
     }
   };

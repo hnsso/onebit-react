@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./List.css";
 import TodoItem from "./TodoItem";
 // 구조분해 할당으로 props로 객체를 받아올수있다
-const List = ({ todos }) => {
+const List = ({ todos, onUpdate }) => {
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -10,9 +10,11 @@ const List = ({ todos }) => {
   };
 
   const getFileteredData = () => {
+    // search에 "빈배열"이면 todos를 반환하고
     if (search === "") {
       return todos;
     }
+    // todos에 todo가 포함되어있으면 찾아내겠다
     return todos.filter((todo) =>
       todo.content.toLowerCase().includes(search.toLowerCase())
     );
@@ -31,7 +33,7 @@ const List = ({ todos }) => {
       />
       <div className="todos_wrapper">
         {filteredTodos.map((todo) => {
-          return <TodoItem key={todo.id} {...todo} />;
+          return <TodoItem key={todo.id} {...todo} onUpdate={onUpdate} />;
         })}
       </div>
     </div>

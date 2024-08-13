@@ -16,6 +16,7 @@ const App = () => {
     //  첫번째함수인 콜백함수를 실행시켜준다
     console.log("mount");
   }, []);
+
   //  deps에 state 값이 변경될때마다 콜백함수를 실행시킨다
   //  = 의존성 배열 (dependency array) = deps
 
