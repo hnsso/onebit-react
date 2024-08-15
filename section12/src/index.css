@@ -1,0 +1,32 @@
+/* ======================= 폰트관련  ===========================*/
+/* 1 . public 폴더안에다가 내가 사용할 폰트 넣고
+   2 . 내가 적용할 css파일에다가 @font-face로 내가 적고싶은 폰트 이름 적고
+   3 . url에다가 /폰트 이름 적기 */
+
+@font-face {
+  font-family: "NanumPenScript";
+  src: url("/NanumPenScript-Regular.ttf");
+}
+
+body * {
+  font-family: "NanumPenScript";
+}
+
+html,
+body {
+  margin: 0px;
+  width: 100%;
+  background-color: rgb(246, 246, 246);
+}
+
+#root {
+  background-color: white;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  height: 100%;
+  box-shadow: rgb(100, 100, 100) 0px 0px 29px 0px;
+}
+
+/* =========================================================== */
