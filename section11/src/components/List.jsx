@@ -1,8 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import "./List.css";
 import TodoItem from "./TodoItem";
+import { TodoStateContext } from "../App";
+
 // 구조분해 할당으로 props로 객체를 받아올수있다
-const List = ({ todos, onUpdate, onDelete, useCallback }) => {
+const List = () => {
+  const todos = useContext(TodoStateContext);
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -53,14 +56,7 @@ const List = ({ todos, onUpdate, onDelete, useCallback }) => {
       />
       <div className="todos_wrapper">
         {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

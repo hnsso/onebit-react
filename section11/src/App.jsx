@@ -1,4 +1,12 @@
-import { useState, useRef, useReducer, useCallback } from "react";
+import {
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+  createContext,
+  useMemo,
+  // props의 계층적 전달대신 => 다이렉트로 전달하고 싶을때
+} from "react";
 import "./App.css";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
@@ -42,6 +50,12 @@ function reducer(state, action) {
   }
 }
 
+// Props로 인해 리렌더링이 일어나는 component
+export const TodoStateContext = createContext();
+
+// context로 리렌더링이 일어나지 않는 component
+export const TodoDispatchContext = createContext();
+
 const App = () => {
   // state를 이용해야하는 조상인 부모컴포넌트에서 관리해야한다.
   // todos에 배열형태로 List를 보관하기 !!
@@ -68,7 +82,7 @@ const App = () => {
   const onCreate = useCallback((content) => {
     dispatch({
       type: "CREATE",
-      date: {
+      data: {
         id: idRef.current++,
         isDone: false,
         content: content,
@@ -106,13 +120,24 @@ const App = () => {
     });
   }, []);
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onDelete, onUpdate };
+  }, []);
+
   return (
     <div className="App">
       {/* <Exam /> */}
       <Header />
-      {/* Editor컴포넌트에 props로 전달 */}
-      <Editor onCreate={onCreate} />
-      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      <TodoStateContext.Provider
+        // value로 Editor , List , TodoItem 컴포넌트는 데이터를 공급받을수 있다
+        value={todos}
+      >
+        <TodoDispatchContext.Provider value={memoizedDispatch}>
+          {/* Editor컴포넌트에 props로 전달 */}
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 };
