@@ -97,69 +97,6 @@ const App = () => {
 
   return (
     <>
-      {/* <Header
-        title={"Header"}
-        leftChild={<Button text={"Left"} />}
-        rightChild={<Button text={"Right"} />}
-      />
-      <Button
-        type={"DEFUALT"}
-        text={"123"}
-        onClick={() => {
-          console.log("버튼 클릭 !!");
-        }}
-      />
-      <Button
-        type={"POSITIVE"}
-        text={"123"}
-        onClick={() => {
-          console.log("버튼 클릭 !!");
-        }}
-      />
-      <Button
-        type={"NEGATIVE"}
-        text={"123"}
-        onClick={() => {
-          console.log("버튼 클릭 !!");
-        }}
-      /> */}
-      {/* 우리는 Img를 불러올때는 assets폴더에다가 넣고 import로 가져와야한다
-          => why ) public폴더에서 URL경로로 파일을 가져오면 안된다 근데 소수의 경우이고 다수이면 public 폴더에 넣자 */}
-      {/* <div>
-        <img src={getEmotionImage(1)} alt="" />
-        <img src={getEmotionImage(2)} alt="" />
-        <img src={getEmotionImage(3)} alt="" />
-        <img src={getEmotionImage(4)} alt="" />
-        <img src={getEmotionImage(5)} alt="" />
-      </div>
-      <div>
-        <Link to={"/"}>Home</Link>
-        <Link to={"/new"}>New</Link>
-        <Link to={"/diary"}>Diary</Link>
-      </div> */}
-      {/* <button onClick={onClickButton}>New 페이지로 이동</button> */}
-
-      <button
-        onClick={() => {
-          onCreate(new Date().getTime(), 1, "Hello");
-        }}
-      >
-        일기 추가 테스트
-      </button>
-      <button
-        onClick={() => {
-          onUpdate(1, new Date().getTime(), 3, "수정된일기입니다");
-        }}
-      >
-        일기 수정 테스트
-      </button>
-      <button
-        onClick={() => {
-          onDelete(1);
-        }}
-      >
-        일기 삭제 테스트
-      </button>
       {/* 데이터 공급을 위한 createContext */}
       <DiaryStateContext.Provider value={data}>
         {/* 상태변화함수 공급 !! */}

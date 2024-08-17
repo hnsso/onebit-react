@@ -1,10 +1,20 @@
-import { useSearchParams } from "react-router-dom";
-
-// useSearchParams; 이방법은 쿼리스트링으로 이동
+import Button from "../components/Button";
+import DiaryList from "../components/DiaryList";
+import Header from "../components/Header";
+// DiaryList;
 
 const Home = () => {
-  const [params, setParams] = useSearchParams();
-  return <div>Home</div>;
+  return (
+    <div>
+      {/* props로 가져와서 title에 입력가능 */}
+      <Header
+        title={"2024년 2월"}
+        leftChild={<Button text={"<"} />}
+        rightChild={<Button text={">"} />}
+      />
+      <DiaryList />
+    </div>
+  );
 };
 
 export default Home;
