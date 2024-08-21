@@ -11,47 +11,64 @@ import Edit from "./pages/Edit";
 // ============ component ============
 import Button from "./components/Button";
 import Header from "./components/Header";
-import { useReducer, useRef, createContext } from "react";
+import { useReducer, useRef, createContext, useEffect } from "react";
 
 // ===================================
 
 // 임시 데이터 객체 배열로 만들어 놓기
-const mokData = [
-  {
-    // 4개의 프로퍼티를 같는 객체
-    id: 1,
-    createdDate: new Date("2024-07-19").getTime(),
-    emotionId: 1,
-    content: "1번 일기내용",
-  },
-  {
-    id: 2,
-    createdDate: new Date("2024-08-18").getTime(),
-    emotionId: 2,
-    content: "2번 일기내용",
-  },
-  {
-    id: 3,
-    createdDate: new Date("2024-08-07").getTime(),
-    emotionId: 3,
-    content: "3번 일기내용",
-  },
-];
+// const mokData = [
+//   {
+//     // 4개의 프로퍼티를 같는 객체
+//     id: 1,
+//     createdDate: new Date("2024-07-19").getTime(),
+//     emotionId: 1,
+//     content: "1번 일기내용",
+//   },
+//   {
+//     id: 2,
+//     createdDate: new Date("2024-08-18").getTime(),
+//     emotionId: 2,
+//     content: "2번 일기내용",
+//   },
+//   {
+//     id: 3,
+//     createdDate: new Date("2024-08-07").getTime(),
+//     emotionId: 3,
+//     content: "3번 일기내용",
+//   },
+// ];
 
 // state는 배열안 객체 , action함수는 dispatch의 객체
 const reducer = (state, action) => {
+  let nextState;
+
   switch (action.type) {
-    case "CREATE":
-      return [action.data, ...state];
-    case "UPDATE":
+    case "INIT":
+      return action.data;
+    case "CREATE": {
+      nextState = [action.data, ...state];
+      break;
+    }
+    case "UPDATE": {
       // 여기서 state는 배열안 객체들을 말한다 그래서 객체들을 순회한다는 의미이다
-      return state.map((item) =>
+      nextState = state.map((item) =>
         String(item.id) === String(action.data.id) ? action.data : item
       );
-    case "DELETE":
+      break;
+    }
+    case "DELETE": {
       // filter메서드는 남겨두는거다
-      return state.filter((item) => String(item.id) !== String(action.id));
+      nextState = state.filter((item) => String(item.id) !== String(action.id));
+      break;
+    }
+    default:
+      return state;
   }
+
+  // 로컬스토리지의 setItem 메서드와 키와 값(객체형태로)을 보내는데 값은
+  localStorage.setItem("diary", JSON.stringify(nextState));
+
+  return nextState;
 };
 
 // 1 . 우리는 날짜관련된 데이터들을 Hoem컴포넌트로 가져가야한다
@@ -64,13 +81,37 @@ export const DiaryDispatchContext = createContext();
 const App = () => {
   // useReducer를 사용한 초기값
   // 앞으로 data는 우리가 담을 객체에대한 프로퍼티로 하자
-  const [data, dispatch] = useReducer(reducer, mokData);
+  const [data, dispatch] = useReducer(reducer, []);
+  const idRef = useRef(0);
 
-  // 글이 작성될때마다 아이디가 추가 useRef();
-  const idRef = useRef(3);
+  useEffect(() => {
+    const storedData = localStorage.getItem("diary");
+
+    if (!storedData) {
+      return;
+    }
+    const parsedData = JSON.parse(storedData);
+    if (!Array.isArray(parsedData)) {
+      return;
+    }
+
+    let maxId = 0;
+    parsedData.forEach((item) => {
+      if (Number(item.id) > maxId) {
+        maxId = Number(item.id);
+      }
+    });
+
+    idRef.current = maxId + 1;
+
+    dispatch({
+      type: "INIT",
+      data: parsedData,
+    });
+  }, []);
 
   // 새로운 일기 추가
-  const onCreate = (createdDate, emotionId, content) => {
+  function onCreate(createdDate, emotionId, content) {
     // 새로운 일기 추가과정
     // 순서 - (1)
     dispatch({
@@ -83,7 +124,7 @@ const App = () => {
         content,
       },
     });
-  };
+  }
 
   // 기존 일기 수정
   // 우리가 수정할때 필요한 프로퍼티들은 모두다 필요하다
